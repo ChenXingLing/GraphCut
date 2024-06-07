@@ -182,7 +182,7 @@ class GrabCut: #迭代图割
 ### **四：【测试】**
 
 输入图像 `messi5.jpg`，输入矩形框，迭代约 $3-5$ 次后收敛：  
-![](./src/output_messi/grabcut_output_5.png)  
+![](src\\output_messi\\grabcut_output_5.png)  
 再添加涂抹区域，约 $2-3$ 次后收敛：  
 ![](./src/output_messi/grabcut_output_12.png)  
 GIF图像：  
