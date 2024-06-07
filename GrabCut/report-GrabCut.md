@@ -25,9 +25,9 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
 
 ##### **(2).高斯混合模型(GMM)**
 
-- 高斯分布（正态分布）：$N(x|\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}\exp({-\frac{(x-\mu)^2}{2\sigma^2}})$，其中 $\mu$ 为均值，$\sigma^2$ 为方差
+- 高斯分布（正态分布）：$N(x|\mu,\sigma^2)=\frac{1}{\sqrt{2\pi}\sigma}\text{exp}({-\frac{(x-\mu)^2}{2\sigma^2}})$，其中 $\mu$ 为均值，$\sigma^2$ 为方差
 
-- $d$ 维高斯分布：$N(\boldsymbol x|\boldsymbol \mu,\boldsymbol \Sigma)=\frac{1}{\sqrt{(2\pi)^d|\boldsymbol \Sigma|}}\exp(-\frac{1}{2}(\boldsymbol x-\boldsymbol \mu)^T\boldsymbol \Sigma^{-1}(\boldsymbol x-\boldsymbol \mu))$，其中 $\boldsymbol x$ 为 $d$ 维向量，$\boldsymbol \mu$ 为 $d$ 维均值向量，$\boldsymbol \Sigma$ 为 $d\times d$ 的协方差矩阵。
+- $d$ 维高斯分布：$N(\boldsymbol x|\boldsymbol \mu,\boldsymbol \Sigma)=\frac{1}{\sqrt{(2\pi)^d|\boldsymbol \Sigma|}}\text{exp}(-\frac{1}{2}(\boldsymbol x-\boldsymbol \mu)^T\boldsymbol \Sigma^{-1}(\boldsymbol x-\boldsymbol \mu))$，其中 $\boldsymbol x$ 为 $d$ 维向量，$\boldsymbol \mu$ 为 $d$ 维均值向量，$\boldsymbol \Sigma$ 为 $d\times d$ 的协方差矩阵。
 
 - **高斯混合模型** $(\text{Gaussian Mixture Model})$：$K$ 个高斯分量的混合模型。简称 $\text{GMM}$。
 
@@ -41,11 +41,11 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
 
 ##### **(3).极大似然**
 
-- **似然函数**：有 $N$ 个数据点，服从某种分布 $Pr(x;\theta)$，我们想找到一组参数 $\theta$，使得生成这些数据点的概率最大，即求 $\arg\max\limits_{\theta}\prod\limits_{i=1}^{N}Pr(x_i;\theta)$。
+- **似然函数**：有 $N$ 个数据点，服从某种分布 $Pr(x;\theta)$，我们想找到一组参数 $\theta$，使得生成这些数据点的概率最大，即求 $\text{arg}\max\limits_{\theta}\prod\limits_{i=1}^{N}Pr(x_i;\theta)$。
 
-- **对数似然函数**：$\arg\max\limits_{\theta}\sum\limits_{i=1}^{N}\ln (Pr(x_i;\theta))$
+- **对数似然函数**：$\text{arg}\max\limits_{\theta}\sum\limits_{i=1}^{N}\ln (Pr(x_i;\theta))$
 
-- 用 $\text{GMM}$ 来表示数据分布，则预测样本时使用的对数似然函数为：$\arg\max\limits_{\theta}\sum\limits_{i=1}^{N}\ln \left(\sum\limits_{k=1}^{K}w_k N(x|\mu_k,\Sigma_k)\right)$
+- 用 $\text{GMM}$ 来表示数据分布，则预测样本时使用的对数似然函数为：$\text{arg}\max\limits_{\theta}\sum\limits_{i=1}^{N}\ln \left(\sum\limits_{k=1}^{K}w_k N(x|\mu_k,\Sigma_k)\right)$
   
   > 这里我们并不知道每个样本点 $x_i$ 属于哪个高斯分量，而是寻找一组参数 $\boldsymbol \theta=\{\boldsymbol w,\boldsymbol \mu,\boldsymbol \Sigma\}$ 让似然函数最大。
   >
@@ -60,9 +60,9 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
   
   > 对前景、背景分别建一个 $d$ 维 $K$ 分量高斯混合模型 $P^{(\alpha=1)},P^{(\alpha=0)}$。取 $K=5$。
 
-- $\boldsymbol \theta$ 为两个 $\text{GMM}$ 的学习参数，$\boldsymbol \theta_n=\{\boldsymbol w^{(\alpha)},\boldsymbol \mu^{(\alpha)},\boldsymbol \Sigma^{(\alpha)}\}$。
+- $\boldsymbol \theta$ 为两个 $\text{GMM}$ 的学习参数，$\boldsymbol{\theta_n}=\{\boldsymbol{w^{(\alpha)}},\boldsymbol{\mu^{(\alpha)}},\boldsymbol{\Sigma^{(\alpha)}\}}$。
 
-- **能量函数**：$E(\boldsymbol z,\boldsymbol \alpha,\boldsymbol \theta)=U(\boldsymbol z,\boldsymbol \alpha,\boldsymbol \theta)+V(\boldsymbol z,\boldsymbol \alpha,\boldsymbol \theta)$，其中 $U$ 为区域项，$V$ 为边界项。
+- **能量函数**：$E(\boldsymbol z,\boldsymbol\alpha,\boldsymbol\theta)=U(\boldsymbol z,\boldsymbol\alpha,\boldsymbol\theta)+V(\boldsymbol z,\boldsymbol\alpha,\boldsymbol\theta)$，其中 $U$ 为区域项，$V$ 为边界项。
   
   > 表示使用当前参数进行前/背景划分的代价。
 
@@ -70,7 +70,7 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
   
   > 根据前/背景划分信息和模型学习参数，计算对数似然函数的负数（高斯混合概率取负对数）作为该像素点代价。
 
-- **边界项**：$V(\boldsymbol z,\boldsymbol \alpha)=\gamma\sum\limits_{(n,m)\in \boldsymbol C}[\alpha_n\neq\alpha_m]\exp(-\beta||z_m-z_n||_2^2)$，其中 $||\cdot||_{2}$ 为向量 $2$ 范数， $\boldsymbol C$ 为按照八连通规则的相邻点对集合，$\gamma$ 取常数 $50$，$\beta$ 取 $(2<(z_m-z_n)^2>)^{-1}$，其中 $<\cdot>$ 表示期望值，即 $\beta=\left(2\frac{1}{|\boldsymbol C|}\sum\limits_{(n,m)\in \boldsymbol C}(z_m-z_n)^{2}\right)^{-1}$。
+- **边界项**：$V(\boldsymbol z,\boldsymbol \alpha)=\gamma\sum\limits_{(n,m)\in \boldsymbol C}[\alpha_n\neq\alpha_m]\text{exp}(-\beta||z_m-z_n||_2^2)$，其中 $||\cdot||_{2}$ 为向量 $2$ 范数， $\boldsymbol C$ 为按照八连通规则的相邻点对集合，$\gamma$ 取常数 $50$，$\beta$ 取 $(2<(z_m-z_n)^2>)^{-1}$，其中 $<\cdot>$ 表示期望值，即 $\beta=\left(2\frac{1}{|\boldsymbol C|}\sum\limits_{(n,m)\in \boldsymbol C}(z_m-z_n)^{2}\right)^{-1}$。
   
   > 四连通：上、下、左、右
   > 八连通：上、下、左、右、左上、右上、左下、右下
@@ -86,7 +86,7 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
   
   > 矩形框内部为前景，外部为背景。
 
-- **步骤二**：根据当前模型参数，使用最小割算法计算：$\arg\min\limits_{\boldsymbol \alpha} E(\boldsymbol z,\boldsymbol \alpha,\boldsymbol \theta)$，得到新的前/背景集合划分
+- **步骤二**：根据当前模型参数，使用最小割算法计算：$\text{arg}\min\limits_{\boldsymbol\alpha} E(\boldsymbol z,\boldsymbol\alpha,\boldsymbol\theta)$，得到新的前/背景集合划分
 
   > ps: 此处对应论文中的 *3.Estimate segmentation*。
 
@@ -103,7 +103,7 @@ Python 基于 OpenCV 库和IGraph库最小割算法实现可交互式图像分�
 
 ##### **(3).【计算模型参数】**
 
-- (1).利用当前的前/背景集合划分 $\boldsymbol \alpha$ ，对两个 $\text{GMM}$ 模型，分别预处理出每个像素单点代价尽量小的高斯分量：$k_n=\arg \min\limits_{k} D(z_n,\alpha_n,k,\boldsymbol \theta)$
+- (1).利用当前的前/背景集合划分 $\boldsymbol \alpha$ ，对两个 $\text{GMM}$ 模型，分别预处理出每个像素单点代价尽量小的高斯分量：$k_n=\text{arg}\min\limits_{k}D(z_n,\alpha_n,k,\boldsymbol\theta)$
 
   > ps: 此处对应论文中的 *1.Assign GMM components to pixels*
 
@@ -181,14 +181,14 @@ class GrabCut: #迭代图割
 
 ### **四：【测试】**
 
-- 输入图像 `messi5.jpg`，输入矩形框，迭代约 $3-5$ 次后收敛：  
+输入图像 `messi5.jpg`，输入矩形框，迭代约 $3-5$ 次后收敛：  
 ![](./src/output_messi/grabcut_output_5.png)  
 再添加涂抹区域，约 $2-3$ 次后收敛：  
 ![](./src/output_messi/grabcut_output_12.png)  
 GIF图像：  
 ![](./messi.gif)
 
-- 对于背景接近纯色的图像 `pic_big.png`，输入矩形框，迭代 $5$ 次稳定收敛。且无需用户涂抹就能获得较好结果：  
+对于背景接近纯色的图像 `pic_big.png`，输入矩形框，迭代 $5$ 次稳定收敛。且无需用户涂抹就能获得较好结果：  
 ![](./src/output_picbig/grabcut_output_5.png)  
 GIF图像：  
 ![](./picbig.gif)
