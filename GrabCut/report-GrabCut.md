@@ -179,16 +179,24 @@ class GrabCut: #迭代图割
 
 ### **四：【测试】**
 
-输入图像 `messi5.jpg`，输入矩形框，迭代约 $3-5$ 次后收敛：  
-![](./src/output_messi/grabcut_output_5.png)  
-再添加涂抹区域，约 $2-3$ 次后收敛：  
-![](./src/output_messi/grabcut_output_12.png)  
-GIF图像：  
+输入图像 `messi5.jpg`，输入矩形框，迭代约 $3-5$ 次后收敛：
+
+![](./src/output_messi/grabcut_output_5.png)
+
+再添加涂抹区域，约 $2-3$ 次后收敛：
+
+![](./src/output_messi/grabcut_output_12.png)
+
+GIF图像：
+
 ![](./messi.gif)
 
-对于背景接近纯色的图像 `pic_big.png`，输入矩形框，迭代 $5$ 次稳定收敛。且无需用户涂抹就能获得较好结果：  
-![](./src/output_picbig/grabcut_output_5.png)  
-GIF图像：  
+对于背景接近纯色的图像 `pic_big.png`，输入矩形框，迭代 $5$ 次稳定收敛。且无需用户涂抹就能获得较好结果：
+
+![](./src/output_picbig/grabcut_output_5.png)
+
+GIF图像：
+
 ![](./picbig.gif)
 
 ### **五：【To be Continued】**
