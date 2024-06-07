@@ -36,23 +36,23 @@ C++ 基于 OpenCV 库和最大流最小割算法实现图像纹理合成。
 
 #### **3.【纹理合成】**
 
-- **多图拼合**：有新图像 $\bold{new} \ \bold{patch}$ 加入拼合时，需要记录原先两图拼合时的缝隙位置old_seam 及代价。综合考虑选择一条新的缝隙。  
+- **多图拼合**：有新图像 $\boldsymbol{new} \ \boldsymbol{patch}$ 加入拼合时，需要记录原先两图拼合时的缝隙位置old_seam 及代价。综合考虑选择一条新的缝隙。  
   
-  > **旧图** + $\bold{old} \ \bold{patch}$ = **现图**（上次拼合的输出，图中包含old_seam）
-  > **现图** + $\bold{new} \ \bold{patch}$ = ？？（本次拼合的输出）
+  > **旧图** + $\boldsymbol{old} \ \boldsymbol{patch}$ = **现图**（上次拼合的输出，图中包含old_seam）
+  > **现图** + $\boldsymbol{new} \ \boldsymbol{patch}$ = ？？（本次拼合的输出）
   
-- **记录旧缝**：用 $\boldsymbol P_s$ 表示“现图”中 $s$ 点使用的像素来自哪张图（**旧图**或者 $\bold{old} \ \bold{patch}$）。  
+- **记录旧缝**：用 $\boldsymbol P_s$ 表示“现图”中 $s$ 点使用的像素来自哪张图（**旧图**或者 $\boldsymbol{old} \ \boldsymbol{patch}$）。  
 
 - **缝节点**：在 old_seam 的每条割边 $s-t$ 位置新建节点 $node$，连接三条边 $s-node$、$node-t$、$node-ed$。
   
 > | 边   | 代价 | 代价含义 | 割掉该边的含义 |
 > | :----: | :----: | :----: | :----: |
-> | $s-node$ | $M_1=M(s,t,\boldsymbol P_s,\bold{new})$ | $s$ 使用**现图**、$t$ 使用 $\bold{new}$ 的代价 |缝隙还在，但 $t$ 点用的图变了|
-> | $node-t$ | $M_2=M(s,t,\bold{new},\boldsymbol P_t)$ | $s$ 使用 $\bold{new}$、$t$ 使用**现图**的代价 |缝隙还在，但 $s$ 点用的图变了|
+> | $s-node$ | $M_1=M(s,t,\boldsymbol P_s,\boldsymbol{new})$ | $s$ 使用**现图**、$t$ 使用 $\boldsymbol{new}$ 的代价 |缝隙还在，但 $t$ 点用的图变了|
+> | $node-t$ | $M_2=M(s,t,\boldsymbol{new},\boldsymbol P_t)$ | $s$ 使用 $\boldsymbol{new}$、$t$ 使用**现图**的代价 |缝隙还在，但 $s$ 点用的图变了|
 > | $node-ed$ | $M_3=M(s,t,\boldsymbol P_s,\boldsymbol P_t)$ | $s$ 使用**现图**、$t$ 使用**现图**的代价（即old_seam代价） |旧缝和像素都保留|
 > $M_1,M_2,M_3$ 验证满足三角形不等式，所以三边最多只会割一条。
 >
-> 若三边都未割，则 $node,s,t$ 三点都划在 $T$ 集合，也即 $s,t$ 两点都使用 $\bold{new} \ \bold{patch}$
+> 若三边都未割，则 $node,s,t$ 三点都划在 $T$ 集合，也即 $s,t$ 两点都使用 $\boldsymbol{new} \ \boldsymbol{patch}$
 
 ![](./src/graphcut_.png)
 
@@ -113,16 +113,16 @@ public:
 
 #### **2.【实现细节】**
 
-- 在计算 $M_1$ 时，可能会遇到 $\boldsymbol P_s$ 图中不存在对应 $t$ 点的情况（$s$ 刚好在 $\boldsymbol P_s$ 的边界线上），此时 $t$ 点对应范数不计算。即 $M_1(s,t,\boldsymbol P_s,\bold{new} \ \bold{patch})=||\boldsymbol P_s(s)-\bold{new} \ \bold{patch}(s)||$ 。
+- 在计算 $M_1$ 时，可能会遇到 $\boldsymbol P_s$ 图中不存在对应 $t$ 点的情况（$s$ 刚好在 $\boldsymbol P_s$ 的边界线上），此时 $t$ 点对应范数不计算。即 $M_1(s,t,\boldsymbol P_s,\boldsymbol{new} \ \boldsymbol{patch})=||\boldsymbol P_s(s)-\boldsymbol{new} \ \boldsymbol{patch}(s)||$ 。
 
 - 用 `xpos(s)` 和 `ypos(s)` 表示 $\boldsymbol P_s$ 图中 $s$ 节点像素在输入图中的位置（纹理合成任务中所有 patch 图均框选自输入图），默认初始化为 $-1$ 。
 
 - 某些边界点可能会要求必须使用某张图，用连向源点或汇点的无穷容量边将其绑定在 $S$ 或 $T$ 集合。
   > ![](./src/bord.png)
-  > (1).**现图**中的空节点。要求使用 $\bold{new}\ \bold{patch}$（对应右边区域）
-  > (2).**现图**与 $\bold{new}\ \bold{patch}$ 重叠部分中靠近**现图**方向的边界。要求使用**现图**（对应中间重叠区域的左边界线）
-  > (3).**现图**与 $\bold{new}\ \bold{patch}$ 重叠部分中靠近 $\bold{new}\ \bold{patch}$ 方向的边界。要求使用 $\bold{new}\ \bold{patch}$（对应中间重叠区域的右边界线）
-  > (4).**现图**中非空，且处于 $\bold{new}\ \bold{patch}$ 的边界。要求使用 **现图**（对应中间重叠区域的上下边界线）
+  > (1).**现图**中的空节点。要求使用 $\boldsymbol{new}\ \boldsymbol{patch}$（对应右边区域）
+  > (2).**现图**与 $\boldsymbol{new}\ \boldsymbol{patch}$ 重叠部分中靠近**现图**方向的边界。要求使用**现图**（对应中间重叠区域的左边界线）
+  > (3).**现图**与 $\boldsymbol{new}\ \boldsymbol{patch}$ 重叠部分中靠近 $\boldsymbol{new}\ \boldsymbol{patch}$ 方向的边界。要求使用 $\boldsymbol{new}\ \boldsymbol{patch}$（对应中间重叠区域的右边界线）
+  > (4).**现图**中非空，且处于 $\boldsymbol{new}\ \boldsymbol{patch}$ 的边界。要求使用 **现图**（对应中间重叠区域的上下边界线）
   >
   > 注：(4)可完全包含(2)，若(4)与(3)矛盾时优先遵循(4)使用 **现图**（对应中间重叠区域的右上点和右下点）
 
@@ -278,15 +278,15 @@ while(++rand_O<=100){
 
 *（左边为GIF图像，pdf文件中无法正常显示）*
 
-- 输入图像 $170*220$，输出图像 $256*256$，`patch size=128`，运行 $50$ 轮次 Random Placement 输出结果：  
+- 输入图像 $170\ast220$，输出图像 $256\ast256$，`patch size=128`，运行 $50$ 轮次 Random Placement 输出结果：  
 
-![](./Random Placement.gif)  ![](./src/output_random.png)
+![](./Random-Placement.gif)  ![](./src/output_random.png)
 
-- 输入图像 $170*220$，输出图像 $256*256$，`patch size=128`，运行 $50$ 轮次 Sub-MinSSD 输出结果：  
+- 输入图像 $170\ast220$，输出图像 $256\ast256$，`patch size=128`，运行 $50$ 轮次 Sub-MinSSD 输出结果：  
 
 ![](Sub-MinSSD.gif) ![](./src/output_subminssd.png)
 
-- 输入图像 $170*220$，输出图像 $256*256$，`patch size=128`，运行 $100$ 轮次 Mix 输出结果：  
+- 输入图像 $170\ast220$，输出图像 $256\ast256$，`patch size=128`，运行 $100$ 轮次 Mix 输出结果：  
 
 ![](Mix.gif) ![](./src/output_mix.png)
 
