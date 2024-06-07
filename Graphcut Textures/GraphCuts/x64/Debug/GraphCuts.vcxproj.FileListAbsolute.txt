@@ -1,0 +1,2 @@
+F:\GraphCuts\GraphCuts\x64\Debug\GraphCuts.exe
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\x64\Debug\GraphCuts.exe

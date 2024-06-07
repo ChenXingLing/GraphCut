@@ -1,0 +1,24 @@
+﻿  main.cpp
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(292,9): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(283,11): message : 在编译 类 模板 成员函数“T TextureSynthesis_by_GraphCut<T>::_FindPatch_MinSSD(int,int,int &,int &,int,int,double,int)”时
+          with
+          [
+              T=double
+          ]
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(425,69): message : 请参阅 "TextureSynthesis_by_GraphCut<double>::TSbG" 中对 "TextureSynthesis_by_GraphCut<double>::_FindPatch_MinSSD" 的第一个引用
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(448,2): message : 请参阅 "main" 中对 "TextureSynthesis_by_GraphCut<double>::TSbG" 的第一个引用
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(446,39): message : 查看对正在编译的 类 模板 实例化“TextureSynthesis_by_GraphCut<double>”的引用
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(69,46): warning C4244: “=”: 从“T”转换到“_Tp”，可能丢失数据
+          with
+          [
+              T=double
+          ]
+          and
+          [
+              _Tp=uchar
+          ]
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(59,18): message : 在编译 类 模板 成员函数“cv::Mat TextureSynthesis_by_GraphCut<double>::Img::to_cvMat(void)”时
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(432,10): message : 请参阅 "TextureSynthesis_by_GraphCut<double>::TSbG" 中对 "TextureSynthesis_by_GraphCut<double>::Img::to_cvMat" 的第一个引用
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(448,2): message : 请参阅 "main" 中对 "TextureSynthesis_by_GraphCut<double>::TSbG" 的第一个引用
+F:\杂物\教材\算法基础\FinalProject\GraphCuts\main.cpp(74,1): message : 查看对正在编译的 类 模板 实例化“TextureSynthesis_by_GraphCut<double>::Img”的引用
+  GraphCuts.vcxproj -> F:\杂物\教材\算法基础\FinalProject\GraphCuts\x64\Debug\GraphCuts.exe
